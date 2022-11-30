@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_course_content_course_contents",
+  "info": {
+    "displayName": "courseContent"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "text",
+      "required": true
+    },
+    "isFree": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "url": {
+      "type": "text",
+      "required": true
+    }
+  }
+}

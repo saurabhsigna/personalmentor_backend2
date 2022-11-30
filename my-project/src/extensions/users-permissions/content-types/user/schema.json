@@ -1,0 +1,123 @@
+{
+  "kind": "collectionType",
+  "collectionName": "up_users",
+  "info": {
+    "name": "user",
+    "description": "",
+    "singularName": "user",
+    "pluralName": "users",
+    "displayName": "User"
+  },
+  "options": {
+    "draftAndPublish": false,
+    "timestamps": true
+  },
+  "attributes": {
+    "username": {
+      "type": "string",
+      "minLength": 3,
+      "unique": true,
+      "configurable": false,
+      "required": true
+    },
+    "email": {
+      "type": "email",
+      "minLength": 6,
+      "configurable": false,
+      "required": true
+    },
+    "provider": {
+      "type": "string",
+      "configurable": false
+    },
+    "password": {
+      "type": "password",
+      "minLength": 6,
+      "configurable": false,
+      "private": true,
+      "searchable": false
+    },
+    "resetPasswordToken": {
+      "type": "string",
+      "configurable": false,
+      "private": true,
+      "searchable": false
+    },
+    "confirmationToken": {
+      "type": "string",
+      "configurable": false,
+      "private": true,
+      "searchable": false
+    },
+    "confirmed": {
+      "type": "boolean",
+      "default": false,
+      "configurable": false
+    },
+    "blocked": {
+      "type": "boolean",
+      "default": false,
+      "configurable": false
+    },
+    "role": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.role",
+      "inversedBy": "users",
+      "configurable": false
+    },
+    "age": {
+      "type": "integer",
+      "default": 14,
+      "required": true
+    },
+    "class": {
+      "type": "enumeration",
+      "enum": [
+        "Class 6",
+        "Class 7",
+        "Class 8",
+        "Class 9",
+        "Class 10",
+        "Class 11",
+        "Class 12"
+      ]
+    },
+    "fullName": {
+      "type": "string",
+      "required": true
+    },
+    "mobileNumber": {
+      "type": "biginteger",
+      "required": false,
+      "unique": true
+    },
+    "address": {
+      "type": "text"
+    },
+    "isVerified": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "courses": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::course.course",
+      "inversedBy": "users"
+    },
+    "orderActivity": {
+      "type": "json"
+    },
+    "board": {
+      "type": "enumeration",
+      "enum": [
+        "UP Board",
+        "CBSE Board"
+      ]
+    },
+    "imgAvatar": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_demo_video_demo_videos",
+  "info": {
+    "displayName": "demoVideo",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "videoUri": {
+      "type": "text"
+    },
+    "title": {
+      "type": "string"
+    }
+  }
+}

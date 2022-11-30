@@ -1,0 +1,96 @@
+{
+  "kind": "collectionType",
+  "collectionName": "courses",
+  "info": {
+    "singularName": "course",
+    "pluralName": "courses",
+    "displayName": "Courses",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "thumbnail": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "preRequisite": {
+      "type": "text"
+    },
+    "enrolled": {
+      "type": "biginteger"
+    },
+    "users": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::users-permissions.user",
+      "mappedBy": "courses"
+    },
+    "courseContent": {
+      "type": "component",
+      "repeatable": true,
+      "component": "course-content.course-content"
+    },
+    "oneLineDescription": {
+      "type": "string"
+    },
+    "price": {
+      "type": "biginteger",
+      "required": true
+    },
+    "teacher": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::teacher.teacher",
+      "inversedBy": "courses"
+    },
+    "class": {
+      "type": "enumeration",
+      "enum": [
+        "Class 6",
+        "Class 7",
+        "Class 8",
+        "Class 9",
+        "Class 10",
+        "Class 11",
+        "Class 12"
+      ],
+      "required": true
+    },
+    "subject": {
+      "type": "enumeration",
+      "enum": [
+        "math",
+        "english",
+        "computer",
+        "physics",
+        "biology",
+        "history",
+        "hindi",
+        "science"
+      ],
+      "default": "math"
+    },
+    "demoVideo": {
+      "displayName": "demoVideo",
+      "type": "component",
+      "repeatable": true,
+      "component": "demo-video.demo-video"
+    }
+  }
+}

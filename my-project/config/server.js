@@ -1,7 +1,7 @@
 module.exports = ({ env }) => ({
   host: env('HOST', '0.0.0.0'),
   port: env.int('PORT', 1337),
-  url:"https://usr6by-1337.csb.app",
+  url:env('APP_URL',"https://usr6by-1337.csb.app"),
   app: {
     keys: env.array('APP_KEYS'),
   },

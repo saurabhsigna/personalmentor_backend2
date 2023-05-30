@@ -27,7 +27,7 @@ module.exports = {
             filters: { phoneNumber: number },
           }
         );
-        if (isNumAlreadyPresent) {
+        if (isNumAlreadyPresent.lenght > 0) {
           apiStatus = 400;
           apiResponse = "number already present";
         } else {

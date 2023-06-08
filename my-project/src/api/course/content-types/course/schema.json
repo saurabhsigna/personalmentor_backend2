@@ -91,6 +91,9 @@
       "type": "component",
       "repeatable": true,
       "component": "demo-video.demo-video"
+    },
+    "keywords": {
+      "type": "string"
     }
   }
 }

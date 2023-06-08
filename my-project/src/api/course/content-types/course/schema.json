@@ -94,6 +94,10 @@
     },
     "keywords": {
       "type": "string"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name"
     }
   }
 }

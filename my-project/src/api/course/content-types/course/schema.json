@@ -41,11 +41,6 @@
       "target": "plugin::users-permissions.user",
       "mappedBy": "courses"
     },
-    "courseContent": {
-      "type": "component",
-      "repeatable": true,
-      "component": "course-content.course-content"
-    },
     "oneLineDescription": {
       "type": "string"
     },
@@ -86,18 +81,17 @@
       ],
       "default": "math"
     },
-    "demoVideo": {
-      "displayName": "demoVideo",
-      "type": "component",
-      "repeatable": true,
-      "component": "demo-video.demo-video"
-    },
     "keywords": {
       "type": "string"
     },
     "slug": {
       "type": "uid",
       "targetField": "name"
+    },
+    "courseContent": {
+      "type": "component",
+      "repeatable": true,
+      "component": "course-content.course-content"
     }
   }
 }

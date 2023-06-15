@@ -6,15 +6,14 @@
 const jwt = require("jsonwebtoken");
 
 module.exports = {
-  course: async (ctx, next) => {
-    const { id } = ctx.params;
+  learnvideo: async (ctx, next) => {
+    const { courseId, videoId } = ctx.params;
     let token = ctx.request.headers.authorization;
-    token = token?.split(" ");
+    token = token.split(" ");
     let statusCode;
     let responseData;
-    console.log("token is ");
-    console.log(token);
-    token = token ? token[1] : "hootiya";
+
+    token = token[1];
     let userId;
     let courseContentResponse;
 
@@ -36,57 +35,62 @@ module.exports = {
         );
 
         let isCoursePurchased = userInfo.courses.some(
-          (course) => course.id == id
+          (course) => course.id == courseId
         );
-
-        console.log("course presented ", isCoursePurchased);
 
         courseContentResponse = await strapi.entityService.findOne(
           "api::course.course",
-          id,
+          courseId,
           {
-            fields: [
-              "name",
-              "subject",
-              "description",
-              "oneLineDescription",
-              "class",
-              "preRequisite",
-            ],
+            fields: [],
             //   filters: { subject: subject, class: currentClass },
             sort: { createdAt: "DESC" },
             populate: {
-              teacher: {
-                fields: ["name", "oneLineIntroduction", "image"],
-              },
               courseContent: {
-                populate: { chapterContent: true },
+                populate: {
+                  chapterContent: true,
+                },
               },
             },
           }
         );
-
+        console.log(courseContentResponse);
         if (isCoursePurchased) {
+          let videoContent = courseContentResponse.courseContent.map(
+            (content) => {
+              content.chapterContent.filter((content) => content.id == videoId);
+            }
+          );
+
+          responseData = videoContent;
         } else {
-          console.log(isCoursePurchased, " dhandha");
           let contentOfCourse = courseContentResponse.courseContent.map(
             (content, index) => {
-              content.chapterContent.map((contentOfChapter) => {
-                if (contentOfChapter?.isFree) {
-                  return contentOfChapter;
+              content.chapterContent.map((content) => {
+                if (content.isFree) {
+                  return content;
                 } else {
-                  delete contentOfChapter?.url;
-                  return contentOfChapter;
+                  delete content.url;
+                  return content;
                 }
               });
               return content;
             }
           );
-          console.log(contentOfCourse);
-          courseContentResponse.courseContent = contentOfCourse;
+
+          let matchedObject = null;
+          for (const item of contentOfCourse) {
+            matchedObject = item.chapterContent.find(
+              (content) => content.id == videoId
+            );
+            if (matchedObject) {
+              break;
+            }
+          }
+          console.log("matchinges");
+          responseData = matchedObject;
         }
 
-        responseData = courseContentResponse;
         statusCode = 200;
       } else {
         statusCode = 403;

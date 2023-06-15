@@ -4,7 +4,8 @@
   "info": {
     "singularName": "teacher",
     "pluralName": "teachers",
-    "displayName": "Teachers"
+    "displayName": "Teachers",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -25,6 +26,9 @@
       "relation": "oneToMany",
       "target": "api::course.course",
       "mappedBy": "teacher"
+    },
+    "image": {
+      "type": "string"
     }
   }
 }

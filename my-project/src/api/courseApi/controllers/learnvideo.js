@@ -9,6 +9,7 @@ module.exports = {
   learnvideo: async (ctx, next) => {
     const { courseId, videoId } = ctx.params;
     let token = ctx.request.headers.authorization;
+    console.log(token);
     token = token.split(" ");
     let statusCode;
     let responseData;

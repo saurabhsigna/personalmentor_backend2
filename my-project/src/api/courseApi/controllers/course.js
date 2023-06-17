@@ -50,6 +50,7 @@ module.exports = {
               "subject",
               "description",
               "oneLineDescription",
+              "thumbnail",
               "class",
               "preRequisite",
             ],

@@ -1,107 +1,110 @@
 "use strict";
-
-/**
- * A set of functions called "actions" for `course`
- */
 const jwt = require("jsonwebtoken");
 
 module.exports = {
   learnvideo: async (ctx, next) => {
-    const { courseId, videoId } = ctx.params;
-    let token = ctx.request.headers.authorization;
-    console.log(token);
-    token = token.split(" ");
-    let statusCode;
-    let responseData;
-
-    token = token[1];
-    let userId;
-    let courseContentResponse;
-
-    jwt.verify(token, process.env.JWT_SECRET, async function (err, decoded) {
-      if (decoded && decoded.id) {
-        userId = decoded.id;
-      }
-    });
     try {
-      if (userId) {
-        let userInfo = await strapi.entityService.findOne(
-          "plugin::users-permissions.user",
-          userId,
-          {
-            populate: {
-              courses: true,
-            },
-          }
-        );
+      const { courseId, videoId } = ctx.params;
+      let token = ctx.request.headers.authorization;
 
-        let isCoursePurchased = userInfo.courses.some(
-          (course) => course.id == courseId
-        );
+      if (!token) {
+        ctx.response.status = 401;
+        ctx.body = "Unauthorized: Missing authorization header";
+        return;
+      }
+      let statusCode;
+      let responseData;
+      token = token.split(" ");
+      if (token[0] !== "Bearer") {
+        ctx.response.status = 401;
+        ctx.body = "Unauthorized: Invalid authorization header format";
+        return;
+      }
 
-        courseContentResponse = await strapi.entityService.findOne(
-          "api::course.course",
-          courseId,
-          {
-            fields: [],
-            //   filters: { subject: subject, class: currentClass },
-            sort: { createdAt: "DESC" },
-            populate: {
-              courseContent: {
-                populate: {
-                  chapterContent: true,
-                },
+      token = token[1];
+      let userId;
+      let courseContentResponse;
+
+      jwt.verify(token, process.env.JWT_SECRET, async function (err, decoded) {
+        if (err || !decoded || !decoded.id) {
+          ctx.response.status = 401;
+          ctx.body = "Unauthorized: Invalid token";
+          return;
+        }
+        userId = decoded.id;
+      });
+
+      let userInfo = await strapi.entityService.findOne(
+        "plugin::users-permissions.user",
+        userId,
+        {
+          populate: {
+            courses: true,
+          },
+        }
+      );
+
+      let isCoursePurchased = userInfo.courses.some(
+        (course) => course.id == courseId
+      );
+
+      courseContentResponse = await strapi.entityService.findOne(
+        "api::course.course",
+        courseId,
+        {
+          fields: [],
+          sort: { createdAt: "DESC" },
+          populate: {
+            courseContent: {
+              populate: {
+                chapterContent: true,
               },
             },
-          }
-        );
-        console.log(courseContentResponse);
-        if (isCoursePurchased) {
-          let videoContent = courseContentResponse.courseContent.map(
-            (content) => {
-              content.chapterContent.filter((content) => content.id == videoId);
-            }
-          );
+          },
+        }
+      );
 
-          responseData = videoContent;
-        } else {
-          let contentOfCourse = courseContentResponse.courseContent.map(
-            (content, index) => {
-              content.chapterContent.map((content) => {
-                if (content.isFree) {
-                  return content;
-                } else {
-                  delete content.url;
-                  return content;
-                }
-              });
-              return content;
-            }
-          );
-
-          let matchedObject = null;
-          for (const item of contentOfCourse) {
-            matchedObject = item.chapterContent.find(
+      if (isCoursePurchased) {
+        let videoContent = courseContentResponse.courseContent.map(
+          (content) => {
+            return content.chapterContent.find(
               (content) => content.id == videoId
             );
-            if (matchedObject) {
-              break;
-            }
           }
-          console.log("matchinges");
-          responseData = matchedObject;
+        );
+
+        responseData = videoContent;
+      } else {
+        let contentOfCourse = courseContentResponse.courseContent.map(
+          (content, index) => {
+            return content.chapterContent.map((content) => {
+              if (content.isFree) {
+                return content;
+              } else {
+                delete content.url;
+                return content;
+              }
+            });
+          }
+        );
+
+        let matchedObject = null;
+        for (const item of contentOfCourse) {
+          matchedObject = item.find((content) => content.id == videoId);
+          if (matchedObject) {
+            break;
+          }
         }
 
-        statusCode = 200;
-      } else {
-        statusCode = 403;
-        responseData = "unauthorized";
+        responseData = matchedObject;
       }
-      ctx.response.status = statusCode;
+
+      ctx.response.status = 200;
       ctx.body = responseData;
     } catch (err) {
       console.log(err);
-      ctx.body = err;
+      ctx.response.status = 500;
+      ctx.body = "Internal Server Error";
     }
   },
 };

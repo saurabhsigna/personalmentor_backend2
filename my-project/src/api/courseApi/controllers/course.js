@@ -3,11 +3,17 @@
 /**
  * A set of functions called "actions" for `course`
  */
+
+// Set the AWS credentials and region
+
+// Create an instance of the S3 service
+
 const jwt = require("jsonwebtoken");
 
 module.exports = {
   course: async (ctx, next) => {
     const { id } = ctx.params;
+
     let token = ctx.request.headers.authorization;
     token = token?.split(" ");
     let statusCode;
@@ -68,6 +74,7 @@ module.exports = {
         );
 
         if (isCoursePurchased) {
+          courseContentResponse.isPurchased = true;
         } else {
           console.log(isCoursePurchased, " dhandha");
           let contentOfCourse = courseContentResponse.courseContent.map(
@@ -84,6 +91,7 @@ module.exports = {
             }
           );
           console.log(contentOfCourse);
+          courseContentResponse.isPurchased = false;
           courseContentResponse.courseContent = contentOfCourse;
         }
 

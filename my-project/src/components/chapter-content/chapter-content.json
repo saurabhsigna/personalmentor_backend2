@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_chapter_content_chapter_contents",
+  "info": {
+    "displayName": "chapterContent",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "url": {
+      "type": "string",
+      "required": true
+    },
+    "isFree": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    }
+  }
+}

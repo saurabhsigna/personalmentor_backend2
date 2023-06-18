@@ -18,17 +18,6 @@
     "description": {
       "type": "text"
     },
-    "thumbnail": {
-      "type": "media",
-      "multiple": false,
-      "required": false,
-      "allowedTypes": [
-        "images",
-        "files",
-        "videos",
-        "audios"
-      ]
-    },
     "preRequisite": {
       "type": "text"
     },
@@ -40,11 +29,6 @@
       "relation": "manyToMany",
       "target": "plugin::users-permissions.user",
       "mappedBy": "courses"
-    },
-    "courseContent": {
-      "type": "component",
-      "repeatable": true,
-      "component": "course-content.course-content"
     },
     "oneLineDescription": {
       "type": "string"
@@ -86,13 +70,19 @@
       ],
       "default": "math"
     },
-    "demoVideo": {
-      "displayName": "demoVideo",
+    "keywords": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name"
+    },
+    "courseContent": {
       "type": "component",
       "repeatable": true,
-      "component": "demo-video.demo-video"
+      "component": "course-content.course-content"
     },
-    "keywords": {
+    "thumbnail": {
       "type": "string"
     }
   }

@@ -10,5 +10,10 @@ module.exports = {
       path: "/course/:id",
       handler: "course.course",
     },
+    {
+      method: "GET",
+      path: "/course/:courseId/learn/:videoId",
+      handler: "learnvideo.learnvideo",
+    },
   ],
 };

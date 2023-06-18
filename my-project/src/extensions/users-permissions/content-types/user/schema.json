@@ -109,15 +109,12 @@
     "orderActivity": {
       "type": "json"
     },
-    "board": {
-      "type": "enumeration",
-      "enum": [
-        "UP Board",
-        "CBSE Board"
-      ]
-    },
     "imgAvatar": {
       "type": "string"
+    },
+    "board": {
+      "type": "string",
+      "required": false
     }
   }
 }

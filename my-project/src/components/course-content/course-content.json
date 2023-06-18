@@ -1,21 +1,23 @@
 {
   "collectionName": "components_course_content_course_contents",
   "info": {
-    "displayName": "courseContent"
+    "displayName": "courseContent",
+    "description": ""
   },
   "options": {},
   "attributes": {
-    "title": {
-      "type": "text",
+    "chapterContent": {
+      "type": "component",
+      "repeatable": true,
+      "component": "chapter-content.chapter-content"
+    },
+    "ChapterName": {
+      "type": "string",
       "required": true
     },
-    "isFree": {
-      "type": "boolean",
-      "default": false,
-      "required": true
-    },
-    "url": {
-      "type": "text",
+    "ChapterNumber": {
+      "type": "integer",
+      "unique": false,
       "required": true
     }
   }

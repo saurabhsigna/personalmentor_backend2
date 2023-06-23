@@ -65,15 +65,11 @@ module.exports = {
       );
 
       if (isCoursePurchased) {
-        let videoContent = courseContentResponse.courseContent.map(
-          (content) => {
-            return content.chapterContent.find(
-              (content) => content.id == videoId
-            );
-          }
+        let videoContent = courseContentResponse.courseContent.flatMap(
+          (content) =>
+            content.chapterContent.filter((content) => content.id == videoId)
         );
-
-        responseData = videoContent;
+        responseData = videoContent[0];
       } else {
         let contentOfCourse = courseContentResponse.courseContent.map(
           (content, index) => {

@@ -4,6 +4,8 @@
  * A set of functions called "actions" for `login`
  */
 const jwt = require("jsonwebtoken");
+const auth = require("@strapi/admin/server/services/auth");
+
 let id;
 const expiresIn = "30d";
 let token;
@@ -18,7 +20,7 @@ module.exports = {
       user = await strapi.entityService.findMany(
         "plugin::users-permissions.user",
         {
-          filters: { email: email },
+          filters: { email: email.toLowerCase() },
         }
       );
     } else if (number && password) {
@@ -33,6 +35,15 @@ module.exports = {
       if (user.length > 0) {
         console.log(user);
         console.log("user already present !");
+
+        const passwordMatch = await auth.validatePassword(
+          password,
+          user[0].password
+        );
+        console.log(passwordMatch, password, user[0].password);
+        if (!passwordMatch) {
+          ctx.throw(400, "Invalid password");
+        }
         const payload = {
           id: user[0].id,
         };
@@ -41,7 +52,7 @@ module.exports = {
 
       if (token && user) {
         let responseData = {
-          verified: user[0].isVerified,
+          verified: user[0]?.isVerified,
           token: token,
         };
         ctx.body = responseData;

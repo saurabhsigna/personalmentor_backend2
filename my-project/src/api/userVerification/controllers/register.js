@@ -8,6 +8,7 @@ const jwt = require("jsonwebtoken");
 module.exports = {
   register: async (ctx, next) => {
     const { email, password } = ctx.request.body;
+
     let id;
     const expiresIn = "30d";
     const statusCode = 200;
@@ -16,7 +17,7 @@ module.exports = {
       const isUserAlreadyPresent = await strapi.entityService.findMany(
         "plugin::users-permissions.user",
         {
-          filters: { email: email },
+          filters: { email: email.toLowerCase() },
         }
       );
 
@@ -31,7 +32,7 @@ module.exports = {
               fullName: "",
               mobileNumber:
                 Math.floor(Math.random() * (442332 - 12011 + 1)) + 12011,
-              email: email,
+              email: email.toLowerCase(),
               role: 1,
               password: password,
               provider: "local",

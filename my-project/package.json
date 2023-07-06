@@ -15,6 +15,7 @@
     "@strapi/plugin-users-permissions": "4.9.2",
     "@strapi/strapi": "4.9.2",
     "@webbio/strapi-plugin-scheduler": "^1.0.5",
+    "bcrypt": "^5.1.0",
     "better-sqlite3": "8.0.1",
     "jsonwebtoken": "^9.0.0",
     "knex": "^0.21.1",

@@ -6,16 +6,17 @@ module.exports = {
     try {
       const { courseId, videoId } = ctx.params;
       let token = ctx.request.headers.authorization;
-
+      console.log("learn video token is ", token);
       if (!token) {
         ctx.response.status = 401;
         ctx.body = "Unauthorized: Missing authorization header";
         return;
       }
+
       let statusCode;
       let responseData;
       token = token.split(" ");
-      if (token[0] !== "Bearer") {
+      if (token[0] !== "Bearer" && token[1]) {
         ctx.response.status = 401;
         ctx.body = "Unauthorized: Invalid authorization header format";
         return;

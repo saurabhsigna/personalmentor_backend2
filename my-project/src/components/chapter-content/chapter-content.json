@@ -18,6 +18,12 @@
       "type": "boolean",
       "default": false,
       "required": true
+    },
+    "thumbnail": {
+      "type": "string"
+    },
+    "duration": {
+      "type": "decimal"
     }
   }
 }
